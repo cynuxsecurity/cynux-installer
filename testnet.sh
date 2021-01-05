@@ -1643,6 +1643,7 @@ dump_full_iso()
   sed -i 's/Storage=volatile/#Storage=auto/' ${CHROOT}/etc/systemd/journald.conf
   rm -rf "$CHROOT/etc/udev/rules.d/81-dhcpcd.rules"
   rm -rf "$CHROOT/etc/systemd/system/"{choose-mirror.service,pacman-init.service,etc-pacman.d-gnupg.mount,getty@tty1.service.d}
+  rm -rf "$CHROOT/etc/resolv.conf"
   rm -rf "$CHROOT/etc/systemd/scripts/choose-mirror"
   rm -rf "$CHROOT/etc/systemd/system/getty@tty1.service.d/autologin.conf"
   rm -rf "$CHROOT/root/"{.automated_script.sh,.zlogin}
