@@ -1367,6 +1367,10 @@ setup_extra_packages()
   return $SUCCESS
 }
 
+upgrade_kernel()
+{
+ chroot $CHROOT 'pacman -Sy linux linux-headers'
+}
 
 # perform system base setup/configurations
 setup_base_system()
@@ -1380,7 +1384,7 @@ setup_base_system()
     sleep_clear 1
     install_base_packages
     sleep_clear 1
-    
+    upgrade_kernel
     sleep_clear 0
     setup_resolvconf
     sleep_clear 1
