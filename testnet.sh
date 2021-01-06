@@ -1288,7 +1288,11 @@ reinitialize_keyring()
   wprintf '[+] Reinitializing keyrings'
   printf "\n"
   sleep 2
-
+chroot $CHROOT "/bin/bash" <<EOF
+pacman-key --init
+pacman-key --populate archlinux
+pacman-key --refresh-key
+EOF
   chroot $CHROOT pacman -S --overwrite='*' --noconfirm archlinux-keyring \
     > $VERBOSE 2>&1
 
