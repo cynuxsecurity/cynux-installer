@@ -1,0 +1,5 @@
+NAME="Cynux Security"
+ID=cynuxsecurity
+PRETTY_NAME="Cynux Security"
+ANSI_COLOR="0;31"
+HOME_URL="https://www.cynuxsecurity.org/"
