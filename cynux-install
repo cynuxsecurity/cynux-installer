@@ -864,7 +864,20 @@ get_partition_label()
   return $SUCCESS
 }
 
+ask_autopart()
+{
+  title 'Hard Drive Setup: Do you want Autopartion ?[y/n]'
+  wprintf 'Choosing it will make boot(500MB), swap(2G) and Rest for root Partition'
+  warn 'If you are choosing no make sure you parted disk accordingly'
+  askme=''
+  read -r $askme
+  if [ $askme = 'y' ] || [ $askme = 'Y' ]
+  then
+    AUTOPART=1
+  fi
 
+  return $SUCCESS
+}
 # get partitions
 ask_partitions()
 {
@@ -1806,6 +1819,7 @@ sync_disk()
 main()
 {
   # do some ENV checks
+  sleep_clear 0
   welcome_function
   sleep_clear 1
   check_uid
@@ -1868,10 +1882,15 @@ main()
   sleep_clear 1
   umount_filesystems 'harddrive'
   sleep_clear 1
-  ask_cfdisk
-  sleep_clear 3
-  get_partition_label
-  ask_partitions
+  if [ $AUTOPART = 1]
+  then
+    autopart
+  else
+    ask_cfdisk
+    sleep_clear 3
+    get_partition_label
+    ask_partitions
+  fi
   print_partitions
   ask_formatting
   clear
