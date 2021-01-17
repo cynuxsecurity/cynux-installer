@@ -1274,8 +1274,8 @@ setup_initramfs()
   wprintf '[+] Setting up InitramFS'
   printf "\n\n"
 
-  cp -f "$CI_PATH/data/etc/mkinitcpio.conf" "$CHROOT/etc/mkinitcpio.conf"
-  cp -fr "$CI_PATH/data/etc/mkinitcpio.d" "$CHROOT/etc/"
+  cp -f "$CI_PATH/files/etc/mkinitcpio.conf" "$CHROOT/etc/mkinitcpio.conf"
+  cp -fr "$CI_PATH/files/etc/mkinitcpio.d" "$CHROOT/etc/"
 
   if [ "$INSTALL_MODE" = "$INSTALL_FULL_ISO" ]
   then
@@ -1360,7 +1360,7 @@ EOF
 
     chroot $CHROOT grub-install --target=i386-pc "$HD_DEV" > $VERBOSE 2>&1
 
-    cp -f "$CI_PATH/data/boot/grub/splash.png" "$CHROOT/boot/grub/splash.png"
+    cp -f "$CI_PATH/files/boot/grub/splash.png" "$CHROOT/boot/grub/splash.png"
 
     chroot $CHROOT grub-mkconfig -o /boot/grub/grub.cfg > $VERBOSE 2>&1
 
@@ -1418,9 +1418,9 @@ setup_user()
   # environment
   elif [ -z "$NORMAL_USER" ]
   then
-    cp -r "$CI_PATH/data/root/." "$CHROOT/root/." > $VERBOSE 2>&1
+    cp -r "$CI_PATH/files/root/." "$CHROOT/root/." > $VERBOSE 2>&1
   else
-    cp -r "$CI_PATH/data/user/." "$CHROOT/home/$user/." > $VERBOSE 2>&1
+    cp -r "$CI_PATH/files/user/." "$CHROOT/home/$user/." > $VERBOSE 2>&1
     chroot $CHROOT chown -R "$user":"$user" "/home/$user" > $VERBOSE 2>&1
   fi
 
@@ -1539,7 +1539,7 @@ update_etc()
   printf "\n\n"
 
   # /etc/*
-  cp -r "$CI_PATH/data/etc/"{arch-release,issue,motd,\
+  cp -r "$CI_PATH/files/etc/"{arch-release,issue,motd,\
 os-release,sysctl.d,systemd} "$CHROOT/etc/." > $VERBOSE 2>&1
 
   return $SUCCESS
