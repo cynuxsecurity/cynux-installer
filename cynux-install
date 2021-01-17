@@ -668,7 +668,7 @@ ask_net_conf_mode()
   return $SUCCESS
 }
 
-
+#auto dhcp isn't working
 # wifi and auto dhcp network interface configuration
 net_conf_wlan()
 {
@@ -1165,7 +1165,11 @@ install_base_packages()
   return $SUCCESS
 }
 
-
+add_resolvconf()
+{
+    title 'Adding Resolv.conf'
+    echo "nameserver 8.8.8.8" > /mnt/etc/resolv.conf
+}
 # setup /etc/resolv.conf
 setup_resolvconf()
 {
@@ -1456,16 +1460,15 @@ setup_base_system()
     dump_full_iso
     sleep_clear 1
     pass_mirror_conf # copy mirror list to chroot env
-
+    add_resolvconf
     setup_resolvconf
+    add_resolvconf
     sleep_clear 1
 
     #install_base_packages
     #sleep_clear 1
 
     #setup_resolvconf
-    sleep_clear 1
-
 
   setup_fstab
   sleep_clear 1
@@ -1490,12 +1493,13 @@ setup_base_system()
 
   setup_user "$NORMAL_USER"
   sleep_clear 1
-
+  add_resolvconf
+  sleep_clear 0
   reinitialize_keyring
   sleep_clear 1
   setup_extra_packages
   sleep_clear 1
-
+  add_resolvconf
   setup_bootloader
   sleep_clear 1
 
@@ -1719,6 +1723,9 @@ dump_full_iso()
   rm -rf "$CHROOT/etc/systemd/system/"{choose-mirror.service,pacman-init.service,etc-pacman.d-gnupg.mount,getty@tty1.service.d}
   rm -rf "$CHROOT/etc/systemd/scripts/choose-mirror"
   rm -rf "$CHROOT/etc/systemd/system/getty@tty1.service.d/autologin.conf"
+  rm -rf "$CHROOT/etc/mtab" #remove mtab
+  cp -f /etc/mtab "$CHROOT/etc/mtab"
+  rm -rf "$CHROOT/etc/resolv.conf"
   rm -rf "$CHROOT/root/"{.automated_script.sh,.zlogin}
   rm -rf "$CHROOT/etc/mkinitcpio-archiso.conf"
   rm -rf "$CHROOT/etc/initcpio"
