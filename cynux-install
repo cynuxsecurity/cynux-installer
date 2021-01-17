@@ -1382,19 +1382,6 @@ ask_user_account()
   return $SUCCESS
 }
 
-del_cynux_account()
-{
-   if confirm 'Cleaning Account' '[?] Delete cynux user account {Be careful if you formed it} [y/n]: '
-   chroot $CHROOT userdel cynux > $VERBOSE 2>&1
-   return $SUCCESS
-}
-
-
-
-
-
-
-
 #setup user account, password and environment
 setup_user()
 {
