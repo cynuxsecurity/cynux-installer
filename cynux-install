@@ -1804,10 +1804,10 @@ main()
   check_uid
   check_env
   check_boot_mode
-  check_iso_type
+  #check_iso_type
 
   # install mode
-  ask_install_mode
+  #ask_install_mode
 
   # output mode
   ask_output_mode
