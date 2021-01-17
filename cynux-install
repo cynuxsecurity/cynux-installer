@@ -1617,7 +1617,7 @@ setup_display_manager()
 # ask user for VirtualBox modules+utils setup
 ask_vbox_setup()
 {
-  if confirm 'Cynux Linux Setup > VirtualBox' '[?] Setup VirtualBox modules [y/n]: '
+  if confirm 'Cynux Linux Setup > VirtualBox' '[?] Setup VirtualBox modules (Required if you are running cynux in vbox) [y/n]: '
   then
     VBOX_SETUP=$TRUE
   fi
@@ -1649,7 +1649,7 @@ setup_vbox_utils()
 # ask user for VirtualBox modules+utils setup
 ask_vmware_setup()
 {
-  if confirm 'Cynux Linux Setup > VMware' '[?] Setup VMware modules [y/n]: '
+  if confirm 'Cynux Linux Setup > VMware' '[?] Setup VMware modules (Required if you are running Cynux in VMware) [y/n]: '
   then
     VMWARE_SETUP=$TRUE
   fi
@@ -1663,7 +1663,7 @@ setup_vmware_utils()
 {
   title 'Cynux Linux Setup > VMware'
 
-  wprintf '[+] Setting up VMware utils'
+  wprintf '[+] Setting up VMware utils '
   printf "\n\n"
 
   chroot $CHROOT pacman -S open-vm-tools xf86-video-vmware \
@@ -1748,6 +1748,27 @@ dump_full_iso()
   wprintf "done\n"
 
   return $SUCCESS
+}
+
+#why not XD for fun and lulz
+easter_egg()
+{
+    title "It's too late now"
+    printf "$GREENB We own this system B4cKd00r1ng Sequence Started$NC"
+
+    printf "$PURPLE...............$NC\n"
+    count=0
+    total=10
+    pstr="[=======================================================================]"
+
+    while [ $count -lt $total ];
+    do
+        sleep 0.5 # this is work
+        count=$(( $count + 1 ))
+        pd=$(( $count * 73 / $total ))
+        printf "$REDBG\r%3d.%1d%% %.${pd}s$NC" $(( $count * 100 / $total )) $(( ($count * 1000 / $total) % 10 )) $pstr
+    done
+    printf "\n$YELLOWB Backdoor Completed XD Enjoy..$NC"
 }
 
 
