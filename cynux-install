@@ -867,11 +867,10 @@ get_partition_label()
 ask_autopart()
 {
   title 'Hard Drive Setup: Do you want Autopartion ?[y/n]'
-  wprintf 'Choosing it will make boot(500MB), swap(2G) and Rest for root Partition'
-  warn 'If you are choosing no make sure you parted disk accordingly'
-  askme=''
-  read -r $askme
-  if [ $askme = 'y' ] || [ $askme = 'Y' ]
+  wprintf 'Choosing it will make boot(500MB), swap(2G) and Rest for root Partition\n'
+  warn 'If you are choosing no make sure you parted disk accordingly [y/n]'
+  read askme
+  if [ "$askme" == "y" ] || [ "$askme" = "Y" ]
   then
     AUTOPART=1
   fi
@@ -1055,7 +1054,7 @@ make_boot_partition()
 
   wprintf '[+] Creating BOOT partition'
   printf "\n\n"
-  if [ "$BOOT_MODE" = 'uefi' ] && [ "$PART_LABEL" = 'gpt' ]
+  if [ "$BOOT_FS_TYPE" == 'fat32' ]
   then
     mkfs.fat -F32 "$BOOT_PART" > $VERBOSE 2>&1 ||
       { err 'Could not create filesystem'; exit $FAILURE; }
@@ -1473,8 +1472,11 @@ setup_base_system()
     dump_full_iso
     sleep_clear 1
     pass_mirror_conf # copy mirror list to chroot env
+    sleep_clear 0
     add_resolvconf
+    sleep_clear 0
     setup_resolvconf
+    sleep_clear 0
     add_resolvconf
     sleep_clear 1
 
@@ -1544,7 +1546,7 @@ update_etc()
 
   # /etc/*
   cp -r "$CI_PATH/files/etc/"{arch-release,issue,motd,\
-os-release,sysctl.d,systemd} "$CHROOT/etc/." > $VERBOSE 2>&1
+os-release} "$CHROOT/etc/." > $VERBOSE 2>&1
 
   return $SUCCESS
 }
@@ -1758,9 +1760,6 @@ setup_cynux()
   enable_iwd_networkd
   sleep_clear 1
 
-  ask_mirror
-  sleep_clear 1
-
   setup_display_manager
   sleep_clear 1
 
@@ -1882,9 +1881,12 @@ main()
   sleep_clear 1
   umount_filesystems 'harddrive'
   sleep_clear 1
-  if [ $AUTOPART = 1]
+  ask_autopart
+  if [ $AUTOPART -eq 1 ]
   then
+    sleep_clear 0
     autopart
+    sleep_clear 1
   else
     ask_cfdisk
     sleep_clear 3
