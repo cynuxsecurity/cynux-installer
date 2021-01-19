@@ -9,3 +9,5 @@ cp -R cynux-installer /usr/share/cynux-installer
 cd /usr/share/cynux-installer
 bash cynux-install
 ```
+
+**Run The Installer as Root**
