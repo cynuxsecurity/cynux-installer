@@ -1,5 +1,6 @@
 # cynux-installer
-Installer For Cynux Security
+Installer For Cynux Security</br>
+*Use with verion 0.1 or having 1337 feel*
 
 ## Install Using Git
 
